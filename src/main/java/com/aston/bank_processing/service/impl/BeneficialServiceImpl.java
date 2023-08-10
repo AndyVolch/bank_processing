@@ -3,6 +3,7 @@ package com.aston.bank_processing.service.impl;
 import com.aston.bank_processing.dao.BeneficialDao;
 import com.aston.bank_processing.models.Beneficial;
 import com.aston.bank_processing.service.abstracts.BeneficialService;
+import com.aston.bank_processing.service.abstracts.ValidationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +14,13 @@ import java.util.Optional;
 @Transactional
 public class BeneficialServiceImpl implements BeneficialService {
     private final BeneficialDao beneficialDao;
+    private final ValidationService<Beneficial> validationService;
 
-    public BeneficialServiceImpl(BeneficialDao beneficialDao) {
+    public BeneficialServiceImpl(BeneficialDao beneficialDao,
+                                 ValidationService<Beneficial> validationService) {
+
         this.beneficialDao = beneficialDao;
+        this.validationService = validationService;
     }
 
     @Override
@@ -24,8 +29,10 @@ public class BeneficialServiceImpl implements BeneficialService {
     }
 
     @Override
-    public Optional<Beneficial> getById(Long id) {
-        return beneficialDao.findById(id);
+    public Beneficial getById(Long id) {
+        Optional<Beneficial> beneficial = beneficialDao.findById(id);
+        validationService.checkIfEntityExists(beneficial);
+        return beneficial.get();
     }
 
     @Override
@@ -39,7 +46,9 @@ public class BeneficialServiceImpl implements BeneficialService {
     }
 
     @Override
-    public Optional<Beneficial> getBeneficialByName(String name) {
-        return beneficialDao.getBeneficialByName(name);
+    public Beneficial getBeneficialByName(String name) {
+        Optional<Beneficial> beneficial = beneficialDao.getBeneficialByName(name);
+        validationService.checkIfEntityExists(beneficial);
+        return beneficial.get();
     }
 }

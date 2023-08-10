@@ -14,13 +14,21 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Account account;
+    @ManyToOne
+    @JoinColumn(name = "reciever_id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Account accountReciever;
     @Column(name = "type")
-    private Integer transationType;
+    private TransactionType transationType;
     @Column(name = "value")
     private Double value;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Account getAccount() {
@@ -31,11 +39,19 @@ public class Transaction {
         this.account = account;
     }
 
-    public Integer getTransationType() {
+    public Account getAccountReciever() {
+        return accountReciever;
+    }
+
+    public void setAccountReciever(Account accountReciever) {
+        this.accountReciever = accountReciever;
+    }
+
+    public TransactionType getTransationType() {
         return transationType;
     }
 
-    public void setTransationType(Integer transationType) {
+    public void setTransationType(TransactionType transationType) {
         this.transationType = transationType;
     }
 
@@ -45,5 +61,9 @@ public class Transaction {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public enum TransactionType {
+        DEPOSIT, WITHDRAW, TRANSFER
     }
 }

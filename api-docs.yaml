@@ -1,0 +1,418 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /v1/accounts:
+    get:
+      tags:
+      - account-controller
+      summary: Получить список всех аккаунтов
+      operationId: getAllAccounts
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+    put:
+      tags:
+      - account-controller
+      summary: Изменить текущий аккаунт
+      operationId: updateAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+    post:
+      tags:
+      - account-controller
+      summary: Создать новый аккаунт
+      operationId: addAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreatingDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /v1/accounts/{accountId}/transactions/withdraw:
+    post:
+      tags:
+      - transaction-controller
+      summary: Списание со счёта
+      operationId: addWithdrawTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WithdrawDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /v1/accounts/{accountId}/transactions/transfer:
+    post:
+      tags:
+      - transaction-controller
+      summary: Перевод с одного счёта на другой
+      operationId: addTransferTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /v1/accounts/{accountId}/transactions/deposit:
+    post:
+      tags:
+      - transaction-controller
+      summary: Пополнение счёта
+      operationId: addDepositTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /v1/accounts/{id}:
+    get:
+      tags:
+      - account-controller
+      summary: Получить конкретный аккаунт по ID
+      operationId: getAccountById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+    delete:
+      tags:
+      - account-controller
+      summary: Удалить аккаунт по ID
+      operationId: deleteAccountById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Account'
+  /v1/accounts/{accountId}/transactions:
+    get:
+      tags:
+      - transaction-controller
+      summary: Получить все транзакции определённого аккаунта
+      operationId: getAllTransactions
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+  /v1/accounts/{accountId}/transactions/{transactionId}:
+    get:
+      tags:
+      - transaction-controller
+      summary: Получить транзакцию по ID
+      operationId: getTransactionsById
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppErrorMessage'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Transaction'
+components:
+  schemas:
+    AppErrorMessage:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        beneficial:
+          $ref: '#/components/schemas/Beneficial'
+        balance:
+          type: number
+          format: double
+        account:
+          type: string
+    Beneficial:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        pincode:
+          type: string
+    AccountCreatingDto:
+      required:
+      - beneficialName
+      type: object
+      properties:
+        beneficialName:
+          type: string
+        pincode:
+          pattern: "[0-9]{4}"
+          type: string
+    WithdrawDto:
+      type: object
+      properties:
+        account:
+          pattern: "40817810[0-9]{13}"
+          type: string
+        value:
+          minimum: 0
+          type: number
+          format: double
+        pincode:
+          pattern: "[0-9]{4}"
+          type: string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        account:
+          $ref: '#/components/schemas/Account'
+        accountReciever:
+          $ref: '#/components/schemas/Account'
+        transationType:
+          type: string
+          enum:
+          - DEPOSIT
+          - WITHDRAW
+          - TRANSFER
+        value:
+          type: number
+          format: double
+    TransferDto:
+      type: object
+      properties:
+        account:
+          pattern: "40817810[0-9]{13}"
+          type: string
+        value:
+          minimum: 0
+          type: number
+          format: double
+        pincode:
+          pattern: "[0-9]{4}"
+          type: string
+        accountReciever:
+          pattern: "40817810[0-9]{13}"
+          type: string
+    DepositDto:
+      type: object
+      properties:
+        account:
+          pattern: "40817810[0-9]{13}"
+          type: string
+        value:
+          minimum: 0
+          type: number
+          format: double

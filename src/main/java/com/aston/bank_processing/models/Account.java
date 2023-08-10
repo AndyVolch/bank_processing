@@ -15,13 +15,18 @@ public class Account {
     @JoinColumn(name = "beneficial_id")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Beneficial beneficial;
+
     @Column(name = "account")
-    private String account;
+    private String accountNumber;
     @Column(name = "balance")
     private Double balance;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Beneficial getBeneficial() {
@@ -33,11 +38,11 @@ public class Account {
     }
 
     public String getAccount() {
-        return account;
+        return accountNumber;
     }
 
     public void setAccount(String account) {
-        this.account = account;
+        this.accountNumber = account;
     }
 
     public Double getBalance() {
